@@ -1,20 +1,34 @@
-import * as React from 'react';
-import { Avatar, Button, Card, Title, Paragraph } from 'react-native-paper';
-import { View } from 'react-native';
+import React from 'react';
+import { TouchableOpacity, Image, Text, View } from 'react-native';
+import { styles } from './styles';
 
-//const LeftContent = props => <Avatar.Icon {...props} icon="folder" />
 
-const MyCardDestaque = () => (
-    <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', marginTop: 20}}>
-      <Card style={{width:300, height: 45}}>
-           <Card.Content>
-          </Card.Content>
-          <Card.Cover source={{ uri: 'https://picsum.photos/700' }} />
-          <Card.Actions>
-         <Paragraph>Alguma coisa</Paragraph>
-          </Card.Actions>
-      </Card>
+
+interface CardImgProps {
+  imagem: any;
+  texto: string;
+
+}
+
+export function CardImg({ imagem, texto }: CardImgProps) {
+
+
+  return (
+    <View style={styles.container}>
+      <View
+        style={styles.card}>
+
+        <Image
+          style={styles.image}
+          source={imagem}
+        />
+        <Text
+          style={styles.text}
+        >
+          {texto}
+        </Text>
+
+      </View>
     </View>
-);
-
-export default MyCardDestaque;
+  )
+}

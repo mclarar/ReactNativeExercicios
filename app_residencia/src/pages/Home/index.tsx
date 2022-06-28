@@ -1,184 +1,114 @@
 import React from "react";
-import { ScrollView, StyleSheet, View,TouchableOpacity,Text, Image } from "react-native";
-import {  Card } from "react-native-elements";
+import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
+import { Card } from "react-native-elements";
 import AxiosInstance from "../../api/AxiosInstance";
 import { useState, useEffect } from "react";
+import { CardImg } from "../../components/CardDestaque/MyCardDestaque";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { StackParamList } from "../../App";
+import { styles } from './styles';
+import { InputBar } from "../../components/Input/Input";
+import { AutenticacaoContext } from "../../context/AutenticacaoContext";
+import { useContext } from "react";
 
-type CategoriaType ={
+type CategoriaType = {
     idCategoria: number;
     nomeCategoria: string;
     nomeImagem: string;
 }
 
+type ProdutoType = {
+    idProduto: number;
+    sku: string;
+    nomeProduto: string;
+    imagemProduto: any;
+}
 
-const Home = ({route, navigation}) =>{
-   const {token} = route.params;
-   const [categoria, setCategoria] = useState<CategoriaType[]>([]);
+type Props = NativeStackScreenProps<StackParamList, 'Home'>;
 
-   useEffect(()=>{
-    getDadosCetegoria();
-}, [])
+const Home = ({ navigation }: Props) => {
+    const { usuario } = useContext(AutenticacaoContext);
+    const [categoria, setCategoria] = useState<CategoriaType[]>([]);
+    const [produto, setProduto] = useState<ProdutoType[]>([]);
 
-   const getDadosCetegoria = async()=>{
+    useEffect(() => {
+        getDadosCetegoria();
+        getProdutos();
+    }, [])
+
+
+    const getProdutos = async () => {
+        AxiosInstance.get(
+            `/produto`,
+            { headers: { "Authorization": `Bearer ${usuario.token}` } }
+
+        ).then(
+            result => {
+                console.log('Dados dos produtos' + JSON.stringify(result.data));
+                setProduto(result.data);
+            }).catch((error) => {
+                console.log('Erro ao carregar a lista de produtos' + JSON.stringify(error));
+            });
+    }
+    const getDadosCetegoria = async () => {
         AxiosInstance.get(
             `/categoria`,
-            {headers:{"Authorization":`Bearer ${token}`}}
+            { headers: { "Authorization": `Bearer ${usuario.token}` } }
         ).then(
-            result =>{
-                console.log('Dados das categorias' +JSON.stringify(result.data));
+            result => {
+                console.log('Dados das categorias' + JSON.stringify(result.data));
                 setCategoria(result.data);
-            }).catch((error)=>{
-                console.log('Erro ao carregar a lista de categoria'+ JSON.stringify(error));
+            }).catch((error) => {
+                console.log('Erro ao carregar a lista de categoria' + JSON.stringify(error));
             });
-   }
+    }
     // console.log('Token: ' +token);
 
-    
-    return(
-        <ScrollView style = {styles.container}>
+
+    return (
+
+
+        <ScrollView style={styles.container}>
+
             <Text>{'Categorias'}</Text>
-        <ScrollView style = {styles.scrollCategoria} horizontal = {true}>
-            {
-                categoria.map((k, i)=>(
-            <TouchableOpacity
-            key={i}
-            onPress={() => console.log(`Categoria ${k.nomeCategoria} Clicada`)}
-            style = {styles.botao_categoria}
-            >
-            <View style = {styles.view}>
-                <Text style = {styles.text_categoria}>{k.nomeCategoria}</Text>
-            </View>
-            </TouchableOpacity>
-                ))
-            }
-        </ScrollView>
-        <Text>{'Recentes'}</Text>
-        <ScrollView style={styles.container_recentes} horizontal = {true}>
-        <TouchableOpacity>
-            <Card >
-                <Card.Image source={{ uri: 'https://picsum.photos/700' }}/>
-                <Card.Divider/>
-                <Card.Title>
-                    Titulo
-                </Card.Title>
-                <Text> {'Descrição'}</Text>
-            </Card>
-            </TouchableOpacity>
-            <TouchableOpacity>
-            <Card >
-                <Card.Image source={{ uri: 'https://picsum.photos/700' }}/>
-                <Card.Divider/>
-                <Card.Title>
-                    Titulo
-                </Card.Title>
-                <Text> {'Descrição'}</Text>
-            </Card>
-            </TouchableOpacity>
-            <TouchableOpacity>
-            <Card >
-                <Card.Image source={{ uri: 'https://picsum.photos/700' }}/>
-                <Card.Divider/>
-                <Card.Title>
-                    Titulo
-                </Card.Title>
-                <Text> {'Descrição'}</Text>
-            </Card>
-            </TouchableOpacity>
-            <TouchableOpacity>
-            <Card >
-                <Card.Image source={{ uri: 'https://picsum.photos/700' }}/>
-                <Card.Divider/>
-                <Card.Title>
-                    Titulo
-                </Card.Title>
-                <Text> {'Descrição'}</Text>
-            </Card>
-            </TouchableOpacity>
-        </ScrollView>
-        <Text>{'Mais Pedidos da sua Região'}</Text>
-        <ScrollView>
-        <TouchableOpacity>
-                <View style = {styles.mais_pedidos}>
-                {/* <Image source={{uri: 'asset:/lombinho.jpg'}} 
-                style={styles.stretch}/> */}
-                <Image source={{ uri: 'https://picsum.photos/700' }}
-                style={styles.stretch}
-                />
-                <Text style={styles.texto_pedidos}>{'Lombinho'}</Text>
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <View style = {styles.mais_pedidos}>
-                <Image source={{ uri: 'https://picsum.photos/700' }}
-                style={styles.stretch}
-                />
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <View style = {styles.mais_pedidos}>
-                <Image source={{ uri: 'https://picsum.photos/700' }}
-                style={styles.stretch}
-                />
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <View style = {styles.mais_pedidos}>
-                <Image source={{ uri: 'https://picsum.photos/700' }}
-                style={styles.stretch}
-                />
-                </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-                <View style = {styles.mais_pedidos}>
-                <Image source={{ uri: 'https://picsum.photos/700' }}
-                style={styles.stretch}
-                />
-                </View>
-            </TouchableOpacity>
-        </ScrollView>
+            <ScrollView style={styles.scrollCategoria} horizontal={true}>
+                {
+                    categoria.map((k, i) => (
+                        <TouchableOpacity
+                            key={i}
+                            onPress={() => console.log(`Categoria ${k.nomeCategoria} Clicada`)}
+                            style={styles.botao_categoria}
+                        >
+                            <View style={styles.view}>
+                                <Text style={styles.text_categoria}>{k.nomeCategoria}</Text>
+                            </View>
+                        </TouchableOpacity>
+                    ))
+                }
+            </ScrollView>
+
+            <Text>{'Recentes'}</Text>
+
+            <ScrollView horizontal={true}>
+                {
+                    produto.map((k, i) => (
+                        <TouchableOpacity
+                            key={i}
+                            onPress={() => console.log(`Produto ${k.nomeProduto} Clicado`)}
+
+                        >
+                            <CardImg
+                                imagem={k.imagemProduto}
+                                texto={k.nomeProduto}
+
+                            />
+                        </TouchableOpacity>
+                    ))
+                }
+            </ScrollView>
         </ScrollView>
     )
 }
-const styles = StyleSheet.create({
-    container:{
-      flex: 1,
-      backgroundColor: '#e4e4e4',
-      padding: 16
-    },
-    scrollCategoria:{
-        flexGrow: 0
-    },
-    view:{
-        with: 150,
-        height: 100,
-        backgroundColor: '#ff0000',
-        justifyContent:'center'
-    },
-    botao_categoria:{
-        alignItems:'center',
-        padding: 10
-    },
-    text_categoria:{
-        color: '#fff',
-        textAlign:'center',
-        fontWeight:'bold'
-    },
-    mais_pedidos:{
-        
-        justifyContent:'center'
-    },
-    stretch: {
-        width: 450,
-        height: 300,
-        resizeMode: 'stretch',
-      },
-      texto_pedidos:{
-        textAlign:"center",
-        backfaceVisibility:"hidden",
-        fontSize:23,
-        color:'#f5ebeb',
-        elevation:3
-      }
-    });
-    
-    export default Home;
+
+
+export default Home;
