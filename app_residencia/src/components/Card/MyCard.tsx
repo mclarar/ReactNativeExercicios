@@ -1,30 +1,33 @@
-import * as React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
-import { Card, Title, Paragraph} from 'react-native-paper';
+import React from 'react';
+import { TouchableOpacity, Image, Text, View } from 'react-native';
+import { styles } from './styles';
 
 
-const MyCard = () => (
-  
-  <View style={{ width:30, display: 'flex', flexDirection: 'row', justifyContent: 'space-around'}}>
-        <Card style={{ display: 'flex', width: 99, height: 90, justifyContent: 'center' }}>
-            <Card.Content style={{ justifyContent: 'center', display: 'flex' }}>
-                <Text>Categoria</Text>
-            </Card.Content>
-        </Card>
-        {/* <Card style={{ display: 'flex', width: 99, height: 90, justifyContent: 'center' }}>
-            <Card.Content style={{ justifyContent: 'center', display: 'flex', marginTop: 15 }}>
-                <Text>Categoria</Text>
-            </Card.Content>
-        </Card>
-        <Card style={{ display: 'flex', width: 99, height: 90, justifyContent: 'center' }}>
-            <Card.Content style={{  display: 'flex',justifyContent: 'center', marginTop: 15, alignItems:"center"}}>
-                <Text>Categoria</Text>
-            </Card.Content>
-        </Card> */}
-    </View>
-  
-  
-   
-);
 
-export default MyCard;
+interface MyCardProps {
+    texto: string;
+
+}
+
+export function MyCard({ texto }: MyCardProps) {
+
+
+    return (
+        <TouchableOpacity
+            onPress={() => console.log(`Categori Clicada`)}
+        >
+            <View style={styles.container}>
+                <View
+                    style={styles.card}>
+
+                    <Text
+                        style={styles.text}
+                    >
+                        {texto}
+                    </Text>
+
+                </View>
+            </View>
+        </TouchableOpacity>
+    )
+}

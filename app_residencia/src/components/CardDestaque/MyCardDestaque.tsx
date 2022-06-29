@@ -14,21 +14,25 @@ export function CardImg({ imagem, texto }: CardImgProps) {
 
 
   return (
-    <View style={styles.container}>
-      <View
-        style={styles.card}>
+    <TouchableOpacity
+      onPress={() => console.log(`Produto Clicado`)}
+    >
+      <View style={styles.container}>
+        <View
+          style={styles.card}>
 
-        <Image
-          style={styles.image}
+          <Image
+            style={styles.image}
 
-        />
-        <Text
-          style={styles.text}
-        >
-          {texto}
-        </Text>
+          />
+          <Text
+            style={styles.text}
+          >
+            {texto}
+          </Text>
 
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   )
 }

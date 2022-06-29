@@ -1,5 +1,5 @@
 import React from "react";
-import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Image } from "react-native";
+import { ScrollView, StyleSheet, View, TouchableOpacity, Text, Image, FlatList, } from "react-native";
 import { Card } from "react-native-elements";
 import AxiosInstance from "../../api/AxiosInstance";
 import { useState, useEffect } from "react";
@@ -7,9 +7,10 @@ import { CardImg } from "../../components/CardDestaque/MyCardDestaque";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../App";
 import { styles } from './styles';
-import { Input } from "react-native-elements";
+import { Input, Icon } from "react-native-elements";
 import { AutenticacaoContext } from "../../context/AutenticacaoContext";
 import { useContext } from "react";
+import { MyCard } from "../../components/Card/MyCard";
 
 type CategoriaType = {
     idCategoria: number;
@@ -36,6 +37,10 @@ const Home = ({ navigation }: Props) => {
         getDadosCetegoria();
         getProdutos();
     }, [])
+
+    useEffect(() => {
+        pesquisarCategoria(busca);
+    }, [busca])
 
 
     const getProdutos = async () => {
@@ -65,59 +70,58 @@ const Home = ({ navigation }: Props) => {
     }
     // console.log('Token: ' +token);
 
+    const pesquisarCategoria = (busca: string) => {
+        if (busca !== '') {
+            setCategoria(
+                categoria.filter(res => res.nomeCategoria.toLowerCase().includes(busca.toLowerCase())),
+            );
+        } else {
+            getDadosCetegoria();
+        }
+    }
+
 
     return (
 
+        <View style={styles.container}>
+            <ScrollView style={styles.body}>
 
-        <ScrollView style={styles.container}>
-            {/* <ScrollView>
                 <View>
+
                     <Input
 
-                        placeholder='buscar'
+                        placeholder='buscar produto'
+                        placeholderTextColor={'#e4e4e4'}
                         onChangeText={setBusca}
                         value={busca}
-                        leftIcon={<Icon name='magnifying-glass' color='#000' type='font-awesome' size={24} />}
+                        leftIcon={<Icon name='search' color='#000' type='font-awesome' size={24} />}
                     />
+
                 </View>
-            </ScrollView> */}
-            <Text>{'Categorias'}</Text>
-            <ScrollView style={styles.scrollCategoria} horizontal={true}>
-                {
-                    categoria.map((k, i) => (
-                        <TouchableOpacity
-                            key={i}
-                            onPress={() => console.log(`Categoria ${k.nomeCategoria} Clicada`)}
-                            style={styles.botao_categoria}
-                        >
-                            <View style={styles.view}>
-                                <Text style={styles.text_categoria}>{k.nomeCategoria}</Text>
-                            </View>
-                        </TouchableOpacity>
-                    ))
-                }
+
+                <Text>{'Categorias'}</Text>
+
+
+
+                <FlatList
+                    data={categoria}
+                    horizontal={true}
+                    renderItem={({ item }) => <MyCard texto={item.nomeCategoria}
+                    />}
+                />
+
+                <Text>{'Recentes'}</Text>
+
+                <FlatList
+                    data={produto}
+                    horizontal={true}
+                    renderItem={({ item }) => <CardImg texto={item.nomeProduto} imagem={item.imagemProduto} />}
+                />
+
+
+
             </ScrollView>
-
-            <Text>{'Recentes'}</Text>
-
-            <ScrollView horizontal={true}>
-                {
-                    produto.map((k, i) => (
-                        <TouchableOpacity
-                            key={i}
-                            onPress={() => console.log(`Produto ${k.nomeProduto} Clicado`)}
-
-                        >
-                            <CardImg
-                                imagem={k.imagemProduto}
-                                texto={k.nomeProduto}
-
-                            />
-                        </TouchableOpacity>
-                    ))
-                }
-            </ScrollView>
-        </ScrollView>
+        </View>
     )
 }
 
