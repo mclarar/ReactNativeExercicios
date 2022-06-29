@@ -20,7 +20,7 @@ export function CardImg({ imagem, texto }: CardImgProps) {
 
         <Image
           style={styles.image}
-          source={imagem}
+
         />
         <Text
           style={styles.text}

@@ -7,6 +7,7 @@ export const AutenticacaoContext = createContext({});
 export const AutenticacaoProvider = ({ children }) => {
   const [usuario, setUsuario] = useState<UsuarioType>();
 
+
   const login = async (email: string, senha: string) => {
     const respostaServiceLogin = await LoginService(email, senha);
     if (!respostaServiceLogin) {

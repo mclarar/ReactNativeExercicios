@@ -7,7 +7,7 @@ import { CardImg } from "../../components/CardDestaque/MyCardDestaque";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { StackParamList } from "../../App";
 import { styles } from './styles';
-import { InputBar } from "../../components/Input/Input";
+import { Input } from "react-native-elements";
 import { AutenticacaoContext } from "../../context/AutenticacaoContext";
 import { useContext } from "react";
 
@@ -30,6 +30,7 @@ const Home = ({ navigation }: Props) => {
     const { usuario } = useContext(AutenticacaoContext);
     const [categoria, setCategoria] = useState<CategoriaType[]>([]);
     const [produto, setProduto] = useState<ProdutoType[]>([]);
+    const [busca, setBusca] = useState('');
 
     useEffect(() => {
         getDadosCetegoria();
@@ -69,7 +70,17 @@ const Home = ({ navigation }: Props) => {
 
 
         <ScrollView style={styles.container}>
+            {/* <ScrollView>
+                <View>
+                    <Input
 
+                        placeholder='buscar'
+                        onChangeText={setBusca}
+                        value={busca}
+                        leftIcon={<Icon name='magnifying-glass' color='#000' type='font-awesome' size={24} />}
+                    />
+                </View>
+            </ScrollView> */}
             <Text>{'Categorias'}</Text>
             <ScrollView style={styles.scrollCategoria} horizontal={true}>
                 {

@@ -7,16 +7,20 @@ import Categoria from './pages/Categorias';
 import { createDrawerNavigator } from '@react-navigation/drawer';
 import Routes from './routes';
 import { AutenticacaoProvider } from './context/AutenticacaoContext';
+import { LoadingProvider } from './context/LoadingContext';
 
 
 export default () => {
 
 
     return (
-        <AutenticacaoProvider>
+        <LoadingProvider>
+            <AutenticacaoProvider>
 
-            <Routes />
-        </AutenticacaoProvider>
+                <Routes />
+            </AutenticacaoProvider>
+        </LoadingProvider>
+
 
     );
 }
