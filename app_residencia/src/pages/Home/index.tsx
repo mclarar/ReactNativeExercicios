@@ -34,7 +34,7 @@ const Home = ({ navigation }: Props) => {
     const [busca, setBusca] = useState('');
 
     useEffect(() => {
-        getDadosCetegoria();
+        getDadosCategoria();
         getProdutos();
     }, [])
 
@@ -56,7 +56,7 @@ const Home = ({ navigation }: Props) => {
                 console.log('Erro ao carregar a lista de produtos' + JSON.stringify(error));
             });
     }
-    const getDadosCetegoria = async () => {
+    const getDadosCategoria = async () => {
         AxiosInstance.get(
             `/categoria`,
             { headers: { "Authorization": `Bearer ${usuario.token}` } }
@@ -76,7 +76,7 @@ const Home = ({ navigation }: Props) => {
                 categoria.filter(res => res.nomeCategoria.toLowerCase().includes(busca.toLowerCase())),
             );
         } else {
-            getDadosCetegoria();
+            getDadosCategoria();
         }
     }
 
@@ -91,7 +91,7 @@ const Home = ({ navigation }: Props) => {
                     <Input
 
                         placeholder='buscar produto'
-                        placeholderTextColor={'#e4e4e4'}
+                        placeholderTextColor={'#000'}
                         onChangeText={setBusca}
                         value={busca}
                         leftIcon={<Icon name='search' color='#000' type='font-awesome' size={24} />}
@@ -106,8 +106,10 @@ const Home = ({ navigation }: Props) => {
                 <FlatList
                     data={categoria}
                     horizontal={true}
-                    renderItem={({ item }) => <MyCard texto={item.nomeCategoria}
-                    />}
+                    renderItem={({ item }) =>
+                        <MyCard texto={item.nomeCategoria}
+
+                        />}
                 />
 
                 <Text>{'Recentes'}</Text>
