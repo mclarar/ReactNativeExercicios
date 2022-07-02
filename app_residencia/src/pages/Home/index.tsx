@@ -73,7 +73,7 @@ const Home = ({ navigation }: Props) => {
     const pesquisarCategoria = (busca: string) => {
         if (busca !== '') {
             setCategoria(
-                categoria.filter(res => res.nomeCategoria.toLowerCase().includes(busca.toLowerCase())),
+                categoria.filter(response => response.nomeCategoria.toUpperCase().includes(busca.toUpperCase())),
             );
         } else {
             getDadosCategoria();
@@ -90,7 +90,7 @@ const Home = ({ navigation }: Props) => {
 
                     <Input
 
-                        placeholder='buscar produto'
+                        placeholder='buscar categoria'
                         placeholderTextColor={'#000'}
                         onChangeText={setBusca}
                         value={busca}

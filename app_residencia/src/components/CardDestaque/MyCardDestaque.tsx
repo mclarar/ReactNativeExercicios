@@ -1,7 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { TouchableOpacity, Image, Text, View } from 'react-native';
-
+import { NavigationContainer, useNavigation } from '@react-navigation/native';
 import { styles } from './styles';
+import Produto from '../../pages/Produtos';
 
 
 
@@ -15,9 +16,11 @@ interface CardImgProps {
 export function CardImg({ imagem, texto }: CardImgProps) {
 
 
+  const navigation = useNavigation();
+
   return (
     <TouchableOpacity
-      onPress={() => console.log(`Produto Clicado`)}
+      onPress={() => navigation.navigate('ProdutoScreen')}
     >
       <View style={styles.container}>
         <View

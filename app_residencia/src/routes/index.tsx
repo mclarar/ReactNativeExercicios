@@ -1,20 +1,27 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Icon } from "react-native-elements";
+import { Icon, withBadge, Badge } from "react-native-elements";
 import Login from "../pages/Login";
 import Home from "../pages/Home";
 import Categoria from "../pages/Categorias";
 import { createDrawerNavigator } from "@react-navigation/drawer";
+import Produto from "../pages/Produtos";
+import Carrinho from "../pages/Carrinho";
+import { CartContext } from "../context/CartContext";
 
 
 const TabNavigation = createBottomTabNavigator();
 const BottomTabNavigator = () => {
+  const { CountCart } = useContext(CartContext);
+
+  const BadgeIcon = withBadge(CountCart())(Icon);
+
   return (
     <TabNavigation.Navigator screenOptions={{
       headerShown: false,
-      tabBarStyle: { backgroundColor: '#35347E', borderBottomWidth: 0, }
+      tabBarStyle: { backgroundColor: '#292841', borderBottomWidth: 0, }
     }}>
       <TabNavigation.Screen
         name="HomeTabScreen"
@@ -37,6 +44,15 @@ const BottomTabNavigator = () => {
             );
           },
         }} />
+      <TabNavigation.Screen
+        name='CarrinhoScreen'
+        component={Carrinho}
+        options={{
+          tabBarIcon: () => (
+            <BadgeIcon name='shopping-cart' type='font-awesome' size={24} color='#000' />
+          ),
+          title: 'Carrinho'
+        }} />
     </TabNavigation.Navigator>
   )
 }
@@ -47,10 +63,11 @@ const NavigationDrawer = () => {
     <DrawerNavigation.Navigator>
       <DrawerNavigation.Screen
         name="TabNavigationScreen"
-        options={{ title: 'Home Principal' }}
+        options={{ title: 'Home ' }}
         component={BottomTabNavigator} />
       <DrawerNavigation.Screen
         name="CategoriasDrawerScreen"
+        options={{ title: 'Categorias' }}
         component={Categoria} />
     </DrawerNavigation.Navigator>
   )
@@ -74,7 +91,13 @@ const Routes = () => {
           name='Home'
           component={NavigationDrawer}
         />
+        <StackNavigation.Screen
+          options={{ headerShown: false }}
+          name="ProdutoScreen"
+          component={Produto}
+        />
       </StackNavigation.Navigator>
+
     </NavigationContainer>
 
 
